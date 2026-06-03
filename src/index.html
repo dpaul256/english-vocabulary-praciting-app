@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TOEIC 單字無限出題機</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">TOEIC Vocabulary Trainer</p>
+        <h1>多益單字無限出題機</h1>
+        <p class="sub">隨機出題、手打答案判斷、錯題重測、連續答對 3 次自動標記已學會。</p>
+      </div>
+      <div class="stats">
+        <div><span id="total">0</span><small>題庫</small></div>
+        <div><span id="done">0</span><small>已作答</small></div>
+        <div><span id="wrongCount">0</span><small>錯題數</small></div>
+        <div><span id="learnedCount">0</span><small>已學會</small></div>
+      </div>
+    </section>
+
+    <section class="panel controls">
+      <label>
+        出題模式
+        <select id="mode">
+          <option value="en-to-zh">英文 → 中文</option>
+          <option value="zh-to-en">中文 → 英文</option>
+        </select>
+      </label>
+      <label>
+        題型
+        <select id="type">
+          <option value="choice">四選一</option>
+          <option value="typing">手打答案</option>
+        </select>
+      </label>
+      <label>
+        重測題數
+        <select id="repeatLimit">
+          <option value="10">10 題</option>
+          <option value="20">20 題</option>
+          <option value="30">30 題</option>
+        </select>
+      </label>
+      <button id="nextBtn">下一題</button>
+      <button id="prepareRepeatBtn" class="ghost">從錯題簿抽題重測</button>
+      <button id="skipBtn" class="ghost danger">跳過，加入錯題簿</button>
+      <button id="resetBtn" class="ghost">重置全部紀錄</button>
+    </section>
+
+    <section id="repeatPanel" class="panel repeat-panel hidden">
+      <div class="repeat-head">
+        <div>
+          <p class="question-label">Wrong Book Review</p>
+          <h2 id="repeatTitle">錯題背誦模式</h2>
+          <p id="repeatIntro" class="sub small-sub"></p>
+        </div>
+        <div class="repeat-actions">
+          <button id="startRepeatBtn">背完，開始錯題考試</button>
+          <button id="cancelRepeatBtn" class="ghost">先不要重測</button>
+        </div>
+      </div>
+      <div id="repeatVocabList" class="repeat-vocab-list"></div>
+    </section>
+
+    <section class="panel quiz">
+      <div class="quiz-topline">
+        <p class="question-label">題目</p>
+        <span id="quizBadge" class="badge">一般練習</span>
+      </div>
+      <h2 id="prompt">Loading...</h2>
+      <div id="options" class="options"></div>
+      <form id="typingForm" class="typing hidden">
+        <input id="typedAnswer" autocomplete="off" placeholder="輸入答案後按 Enter" />
+        <button>送出</button>
+      </form>
+      <p id="hint" class="hint hidden"></p>
+      <div id="result" class="result"></div>
+      <p id="example" class="example"></p>
+    </section>
+
+    <section class="grid">
+      <section class="panel">
+        <h3>錯題簿</h3>
+        <div id="wrongList" class="wrong-list empty">目前沒有錯題。</div>
+      </section>
+      <section class="panel">
+        <h3>規則</h3>
+        <ol class="tips">
+          <li>答錯或跳過會加入錯題簿。</li>
+          <li>每個單字會記錄答對率與連對次數。</li>
+          <li>同一單字連續答對 3 次會標記「已學會」，一般題庫不再出現。</li>
+          <li>錯題簿不會重複收同一個單字。</li>
+          <li>錯題重測需手動點選，會依 10 / 20 / 30 設定從錯題簿隨機抽題。</li>
+          <li>錯題重測考完後，只會從錯題簿移除本次抽到的那批單字。</li>
+          <li>手打答案只會和原始答案比對，不使用 API 或 Qwen 語意判斷。</li>
+        </ol>
+      </section>
+    </section>
+  </main>
+  <script src="vocab-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
